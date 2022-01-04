@@ -1,6 +1,8 @@
 import React, { useReducer, createContext, useState, useEffect, useContext, useRef }from 'react';
-import styled from 'styled-components';
+import styled,{ css } from 'styled-components';
 import axios from 'axios';
+import { AiOutlineBulb } from 'react-icons/ai';
+import { Link, Route, Routes } from 'react-router-dom';
 //메인 페이지
 const UserListBlock = styled.div`
   flex: 1; /*자신이 차지 할 수 있는 영역을 꽉 채우도록*/
@@ -22,6 +24,67 @@ const UserItemBlock = styled.div`
   }
 `;
 
+const CircleButton = styled.button`
+background: #38d9a9;
+&:hover {
+  background: #63e6be;
+}
+&:active {
+  background: #30c997;
+}
+z-index: 5;
+cursor: pointer;
+width: 40px;
+height: 40px;
+display: block;
+align-items: center;
+justify-content: center;
+font-size: 60px;
+position: absolute;
+left: 50%;
+bottom: 0px;
+transform: translate(-50%, 50%);
+color: white;
+border-radius: 50%;
+border: none;
+outline: none;
+display: flex;
+align-items: center;
+margin-bottom: 8px;
+transition: 0.125s all ease-in;
+${props =>
+  css`
+    &:hover {
+      background: #ff8787;
+    }
+  `}
+`;
+
+const Input = styled.input`
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  width: 100%;
+  outline: none;
+  font-size: 18px;
+  box-sizing: border-box;
+`;
+
+const UserListSearchBlock= styled.div`
+width: 800px;
+height: 60px;
+position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
+background: white;
+border-radius: 12px;
+box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
+margin-top: 20px;
+margin-bottom: 10px;
+display: flex;
+flex-direction: column;
+padding: 8px;
+`;
+
 //item
 //width:(1024-24)//2=500
 //height:(1000-20)//5=176
@@ -30,6 +93,8 @@ function UserList() {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [value, setValue] = useState('');
+  const onChange = (e) => setValue(e.target.value);
 
   useEffect(() => {
     //github api에서 users GET
@@ -55,7 +120,16 @@ function UserList() {
 if (loading) return <div>로딩중..</div>;
 if (error) return <div>에러가 발생했습니다</div>;
 if (!users) return null;
+
 return (
+  <div>
+  <UserListSearchBlock>
+  <Input autoFocus 
+    placeholder="검색할 유저명을 입력 후, Enter 를 누르세요:)" 
+    onChange={onChange}
+    value={value}/>
+  <Link to="/user"><CircleButton ><AiOutlineBulb /></CircleButton></Link>
+  </UserListSearchBlock>
   <UserListBlock>
       {users.map(user => (
         <UserItemBlock>
@@ -70,10 +144,12 @@ return (
           <p>
             ({user.url})
           </p>
+          &nbsp;&nbsp;&nbsp;
           <button>more</button>
-        </UserItemBlock> 
+        </UserItemBlock>
       ))}
   </UserListBlock>
+  </div>
   );
 }
 
