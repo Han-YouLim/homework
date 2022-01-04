@@ -3,7 +3,23 @@ import styled,{ css } from 'styled-components';
 import axios from 'axios';
 import { AiOutlineBulb } from 'react-icons/ai';
 import { Link, Route, Routes } from 'react-router-dom';
+import UserProfile from './UserProfile';
 //메인 페이지
+
+const UserListTemplateBlock= styled.div`
+width: 1024px;
+height: 1300px;
+position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
+background: white;
+border-radius: 16px;
+box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
+margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
+margin-top: 96px;
+margin-bottom: 32px;
+display: flex;
+flex-direction: column;
+`;
+
 const UserListBlock = styled.div`
   flex: 1; /*자신이 차지 할 수 있는 영역을 꽉 채우도록*/
   padding: 4px;
@@ -93,8 +109,14 @@ function UserList() {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [path, setPath] = useState(null);
   const [value, setValue] = useState('');
-  const onChange = (e) => setValue(e.target.value);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+    setPath([...path, value]);
+    console.log("dksh"+value);
+  }
 
   useEffect(() => {
     //github api에서 users GET
@@ -122,17 +144,21 @@ if (error) return <div>에러가 발생했습니다</div>;
 if (!users) return null;
 
 return (
-  <div>
+  <UserListTemplateBlock>  
   <UserListSearchBlock>
-  <Input autoFocus 
-    placeholder="검색할 유저명을 입력 후, Enter 를 누르세요:)" 
-    onChange={onChange}
-    value={value}/>
-  <Link to="/user"><CircleButton ><AiOutlineBulb /></CircleButton></Link>
+    <Input
+      placeholder="검색할 유저명을 입력 후, 버튼을 누르세요:)" 
+      onChange={onChange}
+      value={value}/>
+    <Link to={"/user/"+value}>
+      <CircleButton>
+        <AiOutlineBulb />
+      </CircleButton>
+    </Link>
   </UserListSearchBlock>
   <UserListBlock>
       {users.map(user => (
-        <UserItemBlock>
+        <UserItemBlock key={user.id} >
           <h1>
             {user.id}.
           </h1>
@@ -149,7 +175,7 @@ return (
         </UserItemBlock>
       ))}
   </UserListBlock>
-  </div>
+  </UserListTemplateBlock>  
   );
 }
 
