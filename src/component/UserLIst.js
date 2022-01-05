@@ -117,13 +117,10 @@ const MoreButton = styled.button`
 function UserList() {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [path, setPath] = useState(null);
   const [value, setValue] = useState('');
 
   const onChange = (e) => {
     setValue(e.target.value);
-    setPath([...path, value]);
   }
 
   useEffect(() => {
@@ -131,16 +128,15 @@ function UserList() {
     const fetchUsers = async () => {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-        setError(null);
         setUsers(null);
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         const response = await axios.get(
           'https://api.github.com/users?per_page=10'
         );
-        setUsers(response.data); // 데이터는 response.data 안에 들어있습니다.
+        setUsers(response.data); // 데이터는 response.data 안에
       } catch (e) {
-        setError(e);
+        console.log(e);
       }
       setLoading(false);
     };
@@ -148,7 +144,6 @@ function UserList() {
     fetchUsers();
 }, []);
 if (loading) return <div>로딩중..</div>;
-if (error) return <div>에러가 발생했습니다</div>;
 if (!users) return null;
 
 return (
@@ -165,7 +160,7 @@ return (
     </Link>
   </UserListSearchBlock>
   <UserListBlock>
-      {users.map(user => (
+      {users && users.map(user => (
         <Link to={"/user/"+user.login}>  
         <UserItemBlock key={user.id} >
           <h1>
