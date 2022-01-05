@@ -24,10 +24,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const UserItemBlock = styled.div`
+  height: 200px;
   margin: 8px;
   display: flex;
   align-items: center;
   border: 2px solid #ced4da;
+  border-radius: 16px;
+  padding-left: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
   &:hover {
@@ -54,7 +57,6 @@ function UserProfile(){
               `https://api.github.com/users/${username}`
             );
             setUser(response.data); // 데이터는 response.data 안에 들어있습니다.
-            console.log("rsd======="+response.data);
           } catch (e) {
             setError(e);
           }

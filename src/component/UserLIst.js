@@ -2,8 +2,8 @@ import React, { useReducer, createContext, useState, useEffect, useContext, useR
 import styled,{ css } from 'styled-components';
 import axios from 'axios';
 import { AiOutlineBulb } from 'react-icons/ai';
-import { Link, Route, Routes } from 'react-router-dom';
-import UserProfile from './UserProfile';
+import { Link } from 'react-router-dom';
+import { MdAdd } from 'react-icons/md';
 //메인 페이지
 
 const UserListTemplateBlock= styled.div`
@@ -33,10 +33,12 @@ const UserItemBlock = styled.div`
   display: flex;
   align-items: center;
   border: 2px solid #ced4da;
+  border-radius: 16px;
+  padding-left: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
   &:hover {
-    background: #38d9a9;
+    background: #e9ecef;
   }
 `;
 
@@ -101,6 +103,17 @@ flex-direction: column;
 padding: 8px;
 `;
 
+const MoreButton = styled.button`
+  background: #38d9a9;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+`;
+
 //item
 //width:(1024-24)//2=500
 //height:(1000-20)//5=176
@@ -115,7 +128,6 @@ function UserList() {
   const onChange = (e) => {
     setValue(e.target.value);
     setPath([...path, value]);
-    console.log("dksh"+value);
   }
 
   useEffect(() => {
@@ -158,6 +170,7 @@ return (
   </UserListSearchBlock>
   <UserListBlock>
       {users.map(user => (
+        <Link to={"/user/"+user.login}>  
         <UserItemBlock key={user.id} >
           <h1>
             {user.id}.
@@ -171,8 +184,9 @@ return (
             ({user.url})
           </p>
           &nbsp;&nbsp;&nbsp;
-          <button>more</button>
+          <Link to={"/user/"+user.login}><MoreButton><MdAdd /></MoreButton></Link>
         </UserItemBlock>
+        </Link>
       ))}
   </UserListBlock>
   </UserListTemplateBlock>  
