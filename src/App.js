@@ -1,6 +1,5 @@
 import React from 'react';
-import './App.css';
-import styled,  { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { Route, Routes } from 'react-router-dom';
 import UserList from './component/UserLIst'
 import UserProfile from './component/UserProfile';

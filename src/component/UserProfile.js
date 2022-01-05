@@ -24,10 +24,12 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const UserItemBlock = styled.div`
-  margin: 8px;
+  height: 900px;
+  margin: 40px;
   display: flex;
   align-items: center;
   border: 2px solid #ced4da;
+  padding-left: 20px;
   padding-top: 8px;
   padding-bottom: 8px;
   &:hover {
@@ -54,7 +56,6 @@ function UserProfile(){
               `https://api.github.com/users/${username}`
             );
             setUser(response.data); // 데이터는 response.data 안에 들어있습니다.
-            console.log("rsd======="+response.data);
           } catch (e) {
             setError(e);
           }
@@ -72,13 +73,12 @@ function UserProfile(){
         <UserListTemplateBlock>
             <UserItemBlock >
                 <h1>
-                    유저아이디: &nbsp; {user.id}
+                    GITHUB ID: {user.id}
                 </h1>
-                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <h2>
-                    유저명: &nbsp; {user.login}
+                    GITHUB NAME: {user.login}
                 </h2>
-                <br />
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <p>
                     ({user.url})

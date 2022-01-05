@@ -1,9 +1,9 @@
-import React, { useReducer, createContext, useState, useEffect, useContext, useRef }from 'react';
+import React, { useState, useEffect}from 'react';
 import styled,{ css } from 'styled-components';
 import axios from 'axios';
 import { AiOutlineBulb } from 'react-icons/ai';
-import { Link, Route, Routes } from 'react-router-dom';
-import UserProfile from './UserProfile';
+import { MdAdd } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 //메인 페이지
 
 const UserListTemplateBlock= styled.div`
@@ -13,7 +13,7 @@ position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 
 background: white;
 border-radius: 16px;
 box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.04);
-margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
+margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 *
 margin-top: 96px;
 margin-bottom: 32px;
 display: flex;
@@ -76,6 +76,30 @@ ${props =>
   `}
 `;
 
+// const MoreButton = styled.button`
+//   background: #38d9a9;
+//   z-index: 5;
+//   cursor: pointer;
+//   width: 40px;
+//   height: 40px;
+//   display: block;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: 60px;
+//   position: absolute;
+//   left: 50%;
+//   bottom: 0px;
+//   transform: translate(-50%, 50%);
+//   color: white;
+//   border-radius: 50%;
+//   border: none;
+//   outline: none;
+//   display: flex;
+//   align-items: center;
+//   transition: 0.125s all ease-in;
+//   background: #ff6b6b;
+// `;
+
 const Input = styled.input`
   padding: 12px;
   border-radius: 4px;
@@ -101,10 +125,6 @@ flex-direction: column;
 padding: 8px;
 `;
 
-//item
-//width:(1024-24)//2=500
-//height:(1000-20)//5=176
-
 function UserList() {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -115,7 +135,6 @@ function UserList() {
   const onChange = (e) => {
     setValue(e.target.value);
     setPath([...path, value]);
-    console.log("dksh"+value);
   }
 
   useEffect(() => {
@@ -150,7 +169,7 @@ return (
       placeholder="검색할 유저명을 입력 후, 버튼을 누르세요:)" 
       onChange={onChange}
       value={value}/>
-    <Link to={"/user/"+value}>
+    <Link to={"/user/"+value}>  
       <CircleButton>
         <AiOutlineBulb />
       </CircleButton>
@@ -158,21 +177,22 @@ return (
   </UserListSearchBlock>
   <UserListBlock>
       {users.map(user => (
-        <UserItemBlock key={user.id} >
-          <h1>
-            {user.id}.
-          </h1>
-          &nbsp;&nbsp;&nbsp;
-          <h2>
-            {user.login}
-          </h2>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <p>
-            ({user.url})
-          </p>
-          &nbsp;&nbsp;&nbsp;
-          <button>more</button>
+        <Link to={"/user/"+user.login}>  
+          <UserItemBlock key={user.id} >
+            <h1>
+              {user.id}.
+            </h1>
+            <h2>
+              {user.login}
+            </h2>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <p>
+              ({user.url})
+            </p>
+            &nbsp;&nbsp;&nbsp;
+          <Link to={"/user/"+user.login}><button>more</button></Link>
         </UserItemBlock>
+        </Link>
       ))}
   </UserListBlock>
   </UserListTemplateBlock>  
