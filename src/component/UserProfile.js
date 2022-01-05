@@ -44,7 +44,6 @@ function UserProfile(){
     const [error, setError] = useState(null);
     const params = useParams();
     const username = params.username;
-    console.log(username);
 
     useEffect(() => {
         //github api에서 userProfile GET
@@ -89,8 +88,7 @@ function UserProfile(){
             </UserItemBlock>
         </UserListTemplateBlock>
     </>
-    )
+    );
 } 
 
 export default UserProfile;
-

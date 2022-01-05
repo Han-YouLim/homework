@@ -4,6 +4,7 @@ import styled,  { createGlobalStyle } from 'styled-components';
 import { Route, Routes } from 'react-router-dom';
 import UserList from './component/UserLIst'
 import UserProfile from './component/UserProfile';
+import SearchUser from './component/SearchedUsers';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -17,6 +18,7 @@ function App() {
     <Routes>
       <Route path="/" element={<UserList/>} />
       <Route path="/user/:username" element={<UserProfile />} />
+      <Route path="/findusers/:username" element={<SearchUser />} />
     </Routes>  
     <GlobalStyle />
    </>

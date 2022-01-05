@@ -1,0 +1,19 @@
+{searchedUser.map(user => (
+                    <Link to={"/user/"+user.login}>  
+                        <UserItemBlock key={user.id} >
+                            <h1>
+                                {user.id}.
+                            </h1>
+                            &nbsp;&nbsp;&nbsp;
+                            <h2>
+                                {user.login}
+                            </h2>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <p>
+                                ({user.url})
+                            </p>
+                            &nbsp;&nbsp;&nbsp;
+                            <Link to={"/user/"+user.login}><MoreButton><MdAdd /></MoreButton></Link>
+                        </UserItemBlock>
+                    </Link>
+                ))}

@@ -114,10 +114,6 @@ const MoreButton = styled.button`
   align-items: center;
 `;
 
-//item
-//width:(1024-24)//2=500
-//height:(1000-20)//5=176
-
 function UserList() {
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -162,7 +158,7 @@ return (
       placeholder="검색할 유저명을 입력 후, 버튼을 누르세요:)" 
       onChange={onChange}
       value={value}/>
-    <Link to={"/user/"+value}>
+    <Link to={"/findusers/"+value}>
       <CircleButton>
         <AiOutlineBulb />
       </CircleButton>
