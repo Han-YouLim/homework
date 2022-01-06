@@ -2,6 +2,8 @@ import React, { useState, useEffect}from 'react';
 import styled,{ createGlobalStyle  } from 'styled-components';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import {useRecoilState} from "recoil";
+import {recoilUser} from "../Recoils/RecoilAtoms";
 
 const UserListTemplateBlock= styled.div`
 width: 1024px;
@@ -39,34 +41,23 @@ const UserItemBlock = styled.div`
 `;
 
 function UserProfile(){
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [user, setUser] = useRecoilState(recoilUser);
+
     const params = useParams();
     const username = params.username;
 
-    useEffect(() => {
-        //github api에서 userProfile GET
-        const fetchUserProfile= async () => {
-          try {
-            setError(null);
-            setUser(null);
-            setLoading(true);
-            const response = await axios.get(
-              `https://api.github.com/users/${username}`
-            );
-            setUser(response.data); // 데이터는 response.data 안에 들어있습니다.
-          } catch (e) {
-            setError(e);
-          }
-          setLoading(false);
-        };
-        fetchUserProfile();
-    }, []);
+    //github api에서 userProfile GET
+    const fetchUserProfile=  () => {
+        setUser(null);
+        axios.get(
+            `https://api.github.com/users/${username}`
+        ).then((res) => {
+            setUser(res.data);
+        }).catch ()}
 
-    if (loading) return <div>로딩중..</div>;
-    if (error) return <div>에러가 발생했습니다</div>;
+    fetchUserProfile();
     if (!user) return null;
+
     return(
         <>
         <GlobalStyle />

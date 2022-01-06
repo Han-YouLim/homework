@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { MdAdd } from "react-icons/md"
 import { AiOutlineBulb } from "react-icons/ai"
+import {useRecoilState} from "recoil";
+import {recoilSeaerchWord, recoilUsers} from "../Recoils/RecoilAtoms";
 
 const UserListTemplateBlock = styled.div`
     width: 1024px;
@@ -49,7 +51,7 @@ const CircleButton = styled.button`
     margin-bottom: 8px;
     transition: 0.125s all ease-in;
     ${(props) =>
-        css`
+    css`
             &:hover {
                 background: #ff8787;
             }
@@ -121,10 +123,9 @@ const UserItemBlock = styled.div`
 `
 
 export default function SearchUser() {
-    const [searchedUser, setSearchedUser] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [value, setValue] = useState("")
+    const [searchedUser, setSearchedUser] = useRecoilState(recoilUsers)
+    const [value, setValue] = useRecoilState(recoilSeaerchWord)
+
     const params = useParams()
     const targetname = params.username //찾고자 하는 유저
     const q = `q=${targetname}&per_page=10&page=1`
@@ -135,18 +136,13 @@ export default function SearchUser() {
 
     const fetchSearchedUsers = async () => {
         try {
-            setError(null)
-            setSearchedUser(null)
-            setLoading(true)
+            setSearchedUser([])
             const response = await axios.get(
                 `https://api.github.com/search/users?${q}`
             )
             setSearchedUser(response.data) // 데이터는 response.data 안에 들어있습니다.
             console.log(response.data)
-        } catch (e) {
-            setError(e)
-        }
-        setLoading(false)
+        } catch (e){}
     }
 
     useEffect(() => {
@@ -155,8 +151,6 @@ export default function SearchUser() {
         fetchSearchedUsers()
     }, [q])
 
-    if (loading) return <div>로딩중..</div>
-    if (error) return <div>에러가 발생했습니다</div>
     if (!searchedUser) return <div>불러오는 과정을 실패했습니다</div>
 
     return (

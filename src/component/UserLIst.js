@@ -4,6 +4,8 @@ import axios from "axios"
 import { AiOutlineBulb } from "react-icons/ai"
 import { Link } from "react-router-dom"
 import { MdAdd } from "react-icons/md"
+import {useRecoilState} from "recoil";
+import {recoilSeaerchWord, recoilUsers} from "../Recoils/RecoilAtoms";
 //메인 페이지
 
 const UserListTemplateBlock = styled.div`
@@ -114,18 +116,15 @@ const MoreButton = styled.button`
     align-items: center;
 `
 
+
 function UserList() {
-    const [users, setUsers] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [value, setValue] = useState("")
+    const [users, setUsers] = useRecoilState(recoilUsers)
+    const [value, setValue] = useRecoilState(recoilSeaerchWord)
 
     const onChange = (e) => {
         setValue(e.target.value)
     }
 
-    useEffect(() => {
-        //github api에서 users GET
-    }, [])
     const fetchUsers = () => {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setUsers([])
@@ -140,17 +139,9 @@ function UserList() {
         } else {
             real = real + q
         }
-
-        setLoading(true)
-        console.log(real)
         axios
             .get(real)
             .then((res) => {
-                console.log(res)
-                // value == '' ? (UserLi = res.data) : (UserLi = res.data.items)
-
-                // UserLi = value == "" ? res.data : res.data.items
-
                 if (value == "") {
                     UserLi = res.data
                 } else {
@@ -158,21 +149,7 @@ function UserList() {
                 }
                 console.log("가져온 값" + JSON.stringify(UserLi))
                 setUsers(UserLi)
-            })
-            .catch()
-        setLoading(false)
-    }
-
-    const getList = () => {
-        fetchUsers()
-    }
-
-    // useEffect(() => {
-    //     //github api에서 users GET
-
-    // }, []);
-
-    // if (loading) return <div>로딩중..</div>;
+            }).catch()}
 
     return (
         <UserListTemplateBlock>
@@ -182,28 +159,18 @@ function UserList() {
                     onChange={onChange}
                     value={value}
                 />
-                {/* <Link to={"/findusers/"+value}> */}
-                <div
-                    onClick={(e) => {
-                        getList()
-                    }}
-                >
+                <div onClick={(e) => fetchUsers()}>
                     <CircleButton>
                         <AiOutlineBulb />
                     </CircleButton>
                 </div>
-                {/* </Link> */}
             </UserListSearchBlock>
             <UserListBlock>
-                {/* {JSON.stringify(users.data) }
-    <div>
-    </div> */}
                 {users &&
                     users.map((user) => (
                         <Link
                             id={"/user/" + user.login}
-                            to={"/user/" + user.login}
-                        >
+                            to={"/user/" + user.login}>
                             <UserItemBlock key={user.id}>
                                 <h1>{user.id}.</h1>
                                 &nbsp;&nbsp;&nbsp;
@@ -211,7 +178,7 @@ function UserList() {
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <p>({user.url})</p>
                                 &nbsp;&nbsp;&nbsp;
-                                {/* <Link to={"/user/"+user.login}><MoreButton><MdAdd /></MoreButton></Link> */}
+                                <Link to={"/user/"+user.login}><MoreButton><MdAdd /></MoreButton></Link>
                             </UserItemBlock>
                         </Link>
                     ))}
