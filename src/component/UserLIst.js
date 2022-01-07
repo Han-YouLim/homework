@@ -132,12 +132,19 @@ function UserList() {
 
     const nameInput = useRef()
     const { name, nickname } = inputs // 비구조화 할당을 통해 값 추출
+
     const onInputChange = (e) => {
         const { value, name } = e.target // 우선 e.target 에서 name 과 value 를 추출
         setInputs({
             ...inputs, // 기존의 input 객체를 복사한 뒤(spread문법)
             [name]: value, // name 키를 가진 값을 value 로 설정
         })
+
+        window.sessionStorage.setItem("input", value)
+        console.log(
+            "sessionstorage를 사용했다." +
+                window.sessionStorage.getItem("input")
+        )
     }
 
     const onInputReset = () => {
@@ -147,6 +154,7 @@ function UserList() {
         })
         nameInput.current.focus()
     }
+
     const onChange = (e) => {
         setValue(e.target.value)
     }
