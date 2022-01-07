@@ -12,9 +12,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-function App() { 
+function App() {
   return (
-    <>    
+    <>
+
     <Routes>
       <Route path="/" element={<UserList/>} />
       <Route path="/user/:username" element={<UserProfile />} />

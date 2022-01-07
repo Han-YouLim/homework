@@ -193,8 +193,7 @@ function UserList() {
                     users.map((user) => (
                         <Link
                             id={"/user/" + user.login}
-                            to={"/user/" + user.login}
-                        >
+                            to={"/user/" + user.login}>
                             <UserItemBlock key={user.id}>
                                 <h1>{user.id}.</h1>
                                 &nbsp;&nbsp;&nbsp;
