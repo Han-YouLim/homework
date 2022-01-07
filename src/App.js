@@ -18,7 +18,7 @@ function App() {
     <Routes>
       <Route path="/" element={<UserList/>} />
       <Route path="/user/:username" element={<UserProfile />} />
-      <Route path="/findusers/:username" element={<SearchUser />} />
+      <Route path="/finduser/:username" element={<UserProfile />} />
     </Routes>  
     <GlobalStyle />
    </>
