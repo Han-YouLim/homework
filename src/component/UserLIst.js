@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import styled, { css } from "styled-components"
 import axios from "axios"
 import { AiOutlineBulb } from "react-icons/ai"
 import { Link } from "react-router-dom"
 import { MdAdd } from "react-icons/md"
-import {useRecoilState} from "recoil";
-import {recoilSeaerchWord, recoilUsers} from "../Recoils/RecoilAtoms";
+import { useRecoilState } from "recoil"
+import { recoilSeaerchWord, recoilUsers } from "../Recoils/RecoilAtoms"
+import { useCookies } from "react-cookie"
+
 //메인 페이지
 
 const UserListTemplateBlock = styled.div`
@@ -116,14 +118,32 @@ const MoreButton = styled.button`
     align-items: center;
 `
 
-
 function UserList() {
     const [users, setUsers] = useRecoilState(recoilUsers)
     const [value, setValue] = useRecoilState(recoilSeaerchWord)
 
+    const [cookies, setCookie] = useCookies(["name"])
+    // setCookie("name", "ss", { path: "/" })
+
     const onChange = (e) => {
         setValue(e.target.value)
     }
+
+    useEffect(() => {
+        const increaseCookie = () => {
+            if (
+                typeof cookies["name"] !== "undefined" &&
+                !isNaN(cookies["name"])
+            ) {
+                setCookie("name", parseInt(cookies["name"]) + 1)
+            } else {
+                setCookie("name", 1)
+            }
+        }
+
+        increaseCookie()
+        console.log("쿠키왔다 :" + JSON.stringify(cookies["name"]))
+    }, [users])
 
     const fetchUsers = () => {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
@@ -139,6 +159,7 @@ function UserList() {
         } else {
             real = real + q
         }
+
         axios
             .get(real)
             .then((res) => {
@@ -149,7 +170,9 @@ function UserList() {
                 }
                 console.log("가져온 값" + JSON.stringify(UserLi))
                 setUsers(UserLi)
-            }).catch()}
+            })
+            .catch()
+    }
 
     return (
         <UserListTemplateBlock>
@@ -170,7 +193,8 @@ function UserList() {
                     users.map((user) => (
                         <Link
                             id={"/user/" + user.login}
-                            to={"/user/" + user.login}>
+                            to={"/user/" + user.login}
+                        >
                             <UserItemBlock key={user.id}>
                                 <h1>{user.id}.</h1>
                                 &nbsp;&nbsp;&nbsp;
@@ -178,7 +202,11 @@ function UserList() {
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <p>({user.url})</p>
                                 &nbsp;&nbsp;&nbsp;
-                                <Link to={"/user/"+user.login}><MoreButton><MdAdd /></MoreButton></Link>
+                                <Link to={"/user/" + user.login}>
+                                    <MoreButton>
+                                        <MdAdd />
+                                    </MoreButton>
+                                </Link>
                             </UserItemBlock>
                         </Link>
                     ))}
