@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled, { css } from "styled-components"
 import axios from "axios"
 import { AiOutlineBulb } from "react-icons/ai"
@@ -65,7 +65,7 @@ const CircleButton = styled.button`
     position: absolute;
     left: 50%;
     bottom: 0px;
-    transform: translate(-50%, 50%);
+    transform: translate(-50%, 220%);
     color: white;
     border-radius: 50%;
     border: none;
@@ -125,6 +125,28 @@ function UserList() {
     const [cookies, setCookie] = useCookies(["name"])
     // setCookie("name", "ss", { path: "/" })
 
+    const [inputs, setInputs] = useState({
+        name: "",
+        nickname: "",
+    })
+
+    const nameInput = useRef()
+    const { name, nickname } = inputs // 비구조화 할당을 통해 값 추출
+    const onInputChange = (e) => {
+        const { value, name } = e.target // 우선 e.target 에서 name 과 value 를 추출
+        setInputs({
+            ...inputs, // 기존의 input 객체를 복사한 뒤(spread문법)
+            [name]: value, // name 키를 가진 값을 value 로 설정
+        })
+    }
+
+    const onInputReset = () => {
+        setInputs({
+            name: "",
+            nickname: "",
+        })
+        nameInput.current.focus()
+    }
     const onChange = (e) => {
         setValue(e.target.value)
     }
@@ -177,6 +199,28 @@ function UserList() {
     return (
         <UserListTemplateBlock>
             <UserListSearchBlock>
+                <div>
+                    <input
+                        name="name"
+                        placeholder="이름"
+                        onChange={onInputChange}
+                        value={name}
+                        ref={nameInput}
+                    />
+                    <input
+                        name="nickname"
+                        placeholder="닉네임"
+                        onChange={onInputChange}
+                        value={nickname}
+                    />
+                    <button onClick={onInputReset}>초기화</button>
+                    <div>
+                        <b>값: </b>
+                        {name} ({nickname})
+                    </div>
+                </div>
+
+                <p> </p>
                 <Input
                     placeholder="검색할 유저명을 입력 후, 버튼을 누르세요:)"
                     onChange={onChange}
@@ -193,7 +237,8 @@ function UserList() {
                     users.map((user) => (
                         <Link
                             id={"/user/" + user.login}
-                            to={"/user/" + user.login}>
+                            to={"/user/" + user.login}
+                        >
                             <UserItemBlock key={user.id}>
                                 <h1>{user.id}.</h1>
                                 &nbsp;&nbsp;&nbsp;
