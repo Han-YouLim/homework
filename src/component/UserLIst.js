@@ -160,6 +160,11 @@ function UserList() {
         nameInput.current.focus()
     }
 
+    const onRemoveSession = () => {
+        window.sessionStorage.removeItem("input")
+        console.log("session을 삭제했다.")
+    }
+
     const onChange = (e) => {
         setValue(e.target.value)
     }
@@ -226,7 +231,8 @@ function UserList() {
                         onChange={onInputChange}
                         value={nickname}
                     />
-                    <button onClick={onInputReset}>초기화</button>
+                    <button onClick={onInputReset}>reset</button>
+                    <button onClick={onRemoveSession}>session remove</button>
                     &nbsp;&nbsp;&nbsp;
                     <b>
                         {" "}
