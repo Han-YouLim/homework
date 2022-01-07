@@ -65,7 +65,7 @@ const CircleButton = styled.button`
     position: absolute;
     left: 50%;
     bottom: 0px;
-    transform: translate(-50%, 220%);
+    transform: translate(-50%, 80%);
     color: white;
     border-radius: 50%;
     border: none;
@@ -142,7 +142,7 @@ function UserList() {
 
         window.sessionStorage.setItem("input", value)
         console.log(
-            "sessionstorage를 사용했다." +
+            "sessionstorage를 사용했다.  ==> 세션 값: " +
                 window.sessionStorage.getItem("input")
         )
     }
@@ -152,6 +152,11 @@ function UserList() {
             name: "",
             nickname: "",
         })
+        window.sessionStorage.setItem("input", "")
+        console.log(
+            "session을 초기화했다. ==> 세션 값: " +
+                window.sessionStorage.getItem("input")
+        )
         nameInput.current.focus()
     }
 
@@ -222,13 +227,13 @@ function UserList() {
                         value={nickname}
                     />
                     <button onClick={onInputReset}>초기화</button>
-                    <div>
-                        <b>값: </b>
-                        {name} ({nickname})
-                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <b>
+                        {" "}
+                        값: {name} ({nickname})
+                    </b>
                 </div>
 
-                <p> </p>
                 <Input
                     placeholder="검색할 유저명을 입력 후, 버튼을 누르세요:)"
                     onChange={onChange}
