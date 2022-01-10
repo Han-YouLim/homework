@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from "styled-components"
 import { Route, Routes } from "react-router-dom"
 import UserList from "./component/UserLIst"
 import UserProfile from "./component/UserProfile"
+import UseEffectPract from "./component/UseEffectPract"
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/" element={<UserList />} />
                 <Route path="/user/:username" element={<UserProfile />} />
                 <Route path="/finduser/:username" element={<UserProfile />} />
+                <Route path="/useEffectPract" element={<UseEffectPract />} />
             </Routes>
             <GlobalStyle />
         </>
